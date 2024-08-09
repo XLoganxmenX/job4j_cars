@@ -7,6 +7,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import ru.job4j.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,14 +23,15 @@ public class HbmUserRepository implements UserRepository {
      */
     @Override
     public User create(User user) {
-        try (Session session = sf.openSession()) {
-            try {
-                session.beginTransaction();
-                session.save(user);
-                session.getTransaction().commit();
-            } catch (Exception e) {
-                session.getTransaction().rollback();
-            }
+        Session session = sf.openSession();
+        try {
+            session.beginTransaction();
+            session.save(user);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
         return user;
     }
@@ -40,18 +42,19 @@ public class HbmUserRepository implements UserRepository {
      */
     @Override
     public void update(User user) {
-        try (Session session = sf.openSession()) {
-            try {
-                session.beginTransaction();
-                session.createQuery("UPDATE User SET login = :fLogin, password = :fPassword WHERE id = :fId")
-                        .setParameter("fLogin", user.getLogin())
-                        .setParameter("fPassword", user.getPassword())
-                        .setParameter("fId", user.getId())
-                        .executeUpdate();
-                session.getTransaction().commit();
-            } catch (Exception e) {
-                session.getTransaction().rollback();
-            }
+        Session session = sf.openSession();
+        try {
+            session.beginTransaction();
+            session.createQuery("UPDATE User SET login = :fLogin, password = :fPassword WHERE id = :fId")
+                    .setParameter("fLogin", user.getLogin())
+                    .setParameter("fPassword", user.getPassword())
+                    .setParameter("fId", user.getId())
+                    .executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 
@@ -61,16 +64,17 @@ public class HbmUserRepository implements UserRepository {
      */
     @Override
     public void delete(int userId) {
-        try (Session session = sf.openSession()) {
-            try {
-                session.beginTransaction();
-                session.createQuery("DELETE User WHERE id = :fId")
-                        .setParameter("fId", userId)
-                        .executeUpdate();
-                session.getTransaction().commit();
-            } catch (Exception e) {
-                session.getTransaction().rollback();
-            }
+        Session session = sf.openSession();
+        try {
+            session.beginTransaction();
+            session.createQuery("DELETE User WHERE id = :fId")
+                    .setParameter("fId", userId)
+                    .executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 
@@ -80,13 +84,19 @@ public class HbmUserRepository implements UserRepository {
      */
     @Override
     public List<User> findAllOrderById() {
-        try (Session session = sf.openSession()) {
+        List<User> users = new ArrayList<>();
+        Session session = sf.openSession();
+        try {
             session.beginTransaction();
             Query<User> query = session.createQuery("from User ORDER BY id", User.class);
-            List<User> users = query.getResultList();
+            users = query.getResultList();
             session.getTransaction().commit();
-            return users;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
+        return users;
     }
 
     /**
@@ -95,14 +105,20 @@ public class HbmUserRepository implements UserRepository {
      */
     @Override
     public Optional<User> findById(int userId) {
-        try (Session session = sf.openSession()) {
+        Optional<User> optionalUser = Optional.empty();
+        Session session = sf.openSession();
+        try {
             session.beginTransaction();
             Query<User> query = session.createQuery("from User WHERE id = :fId", User.class)
                     .setParameter("fId", userId);
-            User user = query.uniqueResult();
+            optionalUser = query.uniqueResultOptional();
             session.getTransaction().commit();
-            return Optional.ofNullable(user);
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
+        return optionalUser;
     }
 
     /**
@@ -112,14 +128,20 @@ public class HbmUserRepository implements UserRepository {
      */
     @Override
     public List<User> findByLikeLogin(String key) {
-        try (Session session = sf.openSession()) {
+        List<User> users = new ArrayList<>();
+        Session session = sf.openSession();
+        try {
             session.beginTransaction();
             Query<User> query = session.createQuery("from User WHERE login LIKE :fLogin", User.class)
                     .setParameter("fLogin",  "%" + key + "%");
-            List<User> users = query.getResultList();
+            users = query.getResultList();
             session.getTransaction().commit();
-            return users;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
+        return users;
     }
 
     /**
@@ -129,13 +151,19 @@ public class HbmUserRepository implements UserRepository {
      */
     @Override
     public Optional<User> findByLogin(String login) {
-        try (Session session = sf.openSession()) {
+        Optional<User> optionalUser = Optional.empty();
+        Session session = sf.openSession();
+        try {
             session.beginTransaction();
             Query<User> query = session.createQuery("from User WHERE login = :fLogin", User.class)
                     .setParameter("fLogin", login);
-            User user = query.uniqueResult();
+            optionalUser = query.uniqueResultOptional();
             session.getTransaction().commit();
-            return Optional.ofNullable(user);
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
+        return optionalUser;
     }
 }
