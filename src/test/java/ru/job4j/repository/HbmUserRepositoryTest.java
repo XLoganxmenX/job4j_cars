@@ -1,6 +1,5 @@
 package ru.job4j.repository;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,9 +8,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.job4j.Main;
 import ru.job4j.model.User;
-
-import java.time.LocalDateTime;
-import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.*;
 
