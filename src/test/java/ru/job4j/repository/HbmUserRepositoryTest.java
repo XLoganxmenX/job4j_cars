@@ -1,6 +1,7 @@
 package ru.job4j.repository;
 
 import org.hibernate.SessionFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ class HbmUserRepositoryTest {
         userRepository = new HbmUserRepository(crudRepository);
     }
 
-    @BeforeEach
+    @AfterEach
     public void deleteAll() {
         userRepository.findAllOrderById().forEach(user -> userRepository.delete(user.getId()));
     }

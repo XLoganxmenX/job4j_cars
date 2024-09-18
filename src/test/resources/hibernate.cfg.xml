@@ -19,5 +19,7 @@
         <mapping class="ru.job4j.model.Engine" />
         <mapping class="ru.job4j.model.Car" />
         <mapping class="ru.job4j.model.Owner" />
+        <mapping class="ru.job4j.model.CarModel" />
+        <mapping class="ru.job4j.model.File" />
     </session-factory>
 </hibernate-configuration>

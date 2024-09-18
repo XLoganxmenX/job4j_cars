@@ -40,11 +40,8 @@ class HbmOwnerRepositoryTest {
     public void whenFindOwnerByIdThenGetOwnerOptional() throws Exception {
         var user = new User(0, "user", "password");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
-
-
         var expectedOwner = new Owner(0, "Owner", user);
         crudRepository.run((Consumer<Session>) session -> session.persist(expectedOwner));
-
         var actualOwner = ownerRepository.findById(expectedOwner.getId()).get();
         assertThat(actualOwner).usingRecursiveComparison().isEqualTo(expectedOwner);
     }

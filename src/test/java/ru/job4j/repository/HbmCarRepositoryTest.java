@@ -8,10 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.job4j.Main;
-import ru.job4j.model.Car;
-import ru.job4j.model.Engine;
-import ru.job4j.model.Owner;
-import ru.job4j.model.User;
+import ru.job4j.model.*;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -36,6 +33,7 @@ class HbmCarRepositoryTest {
         crudRepository.run("DELETE Engine", Map.of());
         crudRepository.run("DELETE Owner", Map.of());
         crudRepository.run("DELETE User", Map.of());
+        crudRepository.run("DELETE CarModel", Map.of());
     }
 
     @Test
@@ -46,7 +44,9 @@ class HbmCarRepositoryTest {
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var owner = new Owner(0, "owner", user);
         crudRepository.run((Consumer<Session>) session -> session.persist(owner));
-        var car = new Car(0, "car", engine, Set.of(owner));
+        var carModel = new CarModel(0, "model");
+        crudRepository.run((Consumer<Session>) session -> session.persist(carModel));
+        var car = new Car(0, "car", engine, carModel, Set.of(owner));
         var expectedCar = carRepository.save(car);
         var actualCar = carRepository.findById(expectedCar.getId()).get();
 
@@ -61,7 +61,9 @@ class HbmCarRepositoryTest {
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var owner = new Owner(0, "owner", user);
         crudRepository.run((Consumer<Session>) session -> session.persist(owner));
-        var expectedCar = carRepository.save(new Car(0, "car", engine, Set.of(owner)));
+        var carModel = new CarModel(0, "model");
+        crudRepository.run((Consumer<Session>) session -> session.persist(carModel));
+        var expectedCar = carRepository.save(new Car(0, "car", engine, carModel, Set.of(owner)));
         expectedCar.setName("New Car");
 
         var isUpdated = carRepository.update(expectedCar);
@@ -79,9 +81,11 @@ class HbmCarRepositoryTest {
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var owner = new Owner(0, "owner", user);
         crudRepository.run((Consumer<Session>) session -> session.persist(owner));
-        var expectedCar1 = carRepository.save(new Car(0, "car1", engine, Set.of(owner)));
-        var expectedCar2 = carRepository.save(new Car(0, "car2", engine, Set.of(owner)));
-        var expectedCar3 = carRepository.save(new Car(0, "car3", engine, Set.of(owner)));
+        var carModel = new CarModel(0, "model");
+        crudRepository.run((Consumer<Session>) session -> session.persist(carModel));
+        var expectedCar1 = carRepository.save(new Car(0, "car1", engine, carModel, Set.of(owner)));
+        var expectedCar2 = carRepository.save(new Car(0, "car2", engine, carModel, Set.of(owner)));
+        var expectedCar3 = carRepository.save(new Car(0, "car3", engine, carModel, Set.of(owner)));
         var cars = List.of(expectedCar1, expectedCar2, expectedCar3);
 
         var actualCars = carRepository.findAllOrderById();
@@ -97,7 +101,9 @@ class HbmCarRepositoryTest {
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var owner = new Owner(0, "owner", user);
         crudRepository.run((Consumer<Session>) session -> session.persist(owner));
-        var expectedCar = carRepository.save(new Car(0, "car", engine, Set.of(owner)));
+        var carModel = new CarModel(0, "model");
+        crudRepository.run((Consumer<Session>) session -> session.persist(carModel));
+        var expectedCar = carRepository.save(new Car(0, "car", engine, carModel, Set.of(owner)));
 
         var isDeleted = carRepository.delete(expectedCar.getId());
         var actualCar = carRepository.findById(expectedCar.getId());

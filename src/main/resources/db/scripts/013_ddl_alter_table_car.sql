@@ -1,0 +1,1 @@
+ALTER TABLE car ADD COLUMN car_model_id int REFERENCES car_models(id);
