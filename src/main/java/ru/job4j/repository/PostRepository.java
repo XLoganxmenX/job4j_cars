@@ -15,4 +15,6 @@ public interface PostRepository {
     List<Post> findAllCreatedToday();
 
     List<Post> findByCarModel(CarModel carModel);
+
+    List<Post> findAllWithFiles();
 }
