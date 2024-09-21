@@ -155,11 +155,12 @@ public class HbmPostRepository implements PostRepository {
             var posts = crudRepository.query("""
                     SELECT DISTINCT p FROM Post p
                     JOIN FETCH p.user
-                    JOIN FETCH p.files
+                    JOIN FETCH p.files f
                     JOIN FETCH p.car c
                         JOIN FETCH c.engine
                         JOIN FETCH c.owners
                         JOIN FETCH c.carModel m
+                    WHERE f IS NOT NULL
                     """,
                     Post.class
             );
