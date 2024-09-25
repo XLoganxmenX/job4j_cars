@@ -38,7 +38,6 @@ class HbmEngineRepositoryTest {
     public void whenFindEngineByIdThenGetEngineOptional() throws Exception {
         var expectedEngine = new Engine(0, "Engine");
         crudRepository.run((Consumer<Session>) session -> session.persist(expectedEngine));
-
         var actualEngine = engineRepository.findById(expectedEngine.getId()).get();
         assertThat(actualEngine).usingRecursiveComparison().isEqualTo(expectedEngine);
     }
@@ -68,5 +67,4 @@ class HbmEngineRepositoryTest {
         var actualEngines = engineRepository.findAll();
         assertThat(actualEngines).isEmpty();
     }
-
 }

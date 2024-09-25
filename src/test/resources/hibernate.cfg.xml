@@ -12,6 +12,7 @@
         <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
+        <property name="hbm2ddl.auto">create-drop</property>
 
         <mapping class="ru.job4j.model.User" />
         <mapping class="ru.job4j.model.Post" />

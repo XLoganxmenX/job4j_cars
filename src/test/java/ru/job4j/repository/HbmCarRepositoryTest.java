@@ -111,4 +111,10 @@ class HbmCarRepositoryTest {
         assertThat(actualCar).isEmpty();
         assertThat(isDeleted).isTrue();
     }
+
+    @Test
+    public void whenDeleteNotExistThenGetFalse() {
+        var isDeleted = carRepository.delete(0);
+        assertThat(isDeleted).isFalse();
+    }
 }
