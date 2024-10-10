@@ -17,6 +17,7 @@ public class User {
     @EqualsAndHashCode.Include
     private int id;
 
+    private String name;
     private String login;
     private String password;
 }

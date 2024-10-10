@@ -25,13 +25,14 @@ public class HbmUserRepository implements UserRepository {
      * @return пользователь с id.
      */
     @Override
-    public User create(User user) {
+    public Optional<User> create(User user) {
         try {
             crudRepository.run((Consumer<Session>) session -> session.persist(user));
+            return Optional.of(user);
         } catch (Exception e) {
-            LOGGER.error("Exception on create User", e);
+            LOGGER.error("Exception on save User", e);
         }
-        return user;
+        return Optional.empty();
     }
 
     /**
@@ -126,6 +127,19 @@ public class HbmUserRepository implements UserRepository {
             );
         } catch (Exception e) {
             LOGGER.error("Exception on findByLogin User", e);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<User> findByLoginAndPassword(String login, String password) {
+        try {
+            return crudRepository.optional("FROM User WHERE login = :fLogin AND password = :fPassword", User.class,
+                    Map.of("fLogin", login,
+                            "fPassword", password
+                    ));
+        } catch (Exception e) {
+            LOGGER.error("Exception on find User ByLoginAndPassword", e);
         }
         return Optional.empty();
     }

@@ -46,7 +46,7 @@ class HbmPostRepositoryTest {
 
     @Test
     public void whenSavePostAndGetById() throws Exception {
-        var user = new User(0, "user", "password");
+        var user = new User(0, "name", "user", "password");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var priceHistory = new PriceHistory(0, BigInteger.valueOf(100), BigInteger.valueOf(200), LocalDateTime.now());
         crudRepository.run((Consumer<Session>) session -> session.persist(priceHistory));
@@ -63,7 +63,7 @@ class HbmPostRepositoryTest {
 
         var post = postRepository.save(
                 new Post(0, "post", LocalDateTime.now(), user,
-                        List.of(priceHistory), List.of(user), car, List.of(file))
+                        List.of(priceHistory), List.of(user), car, List.of(file), false)
         );
         var actualPost = postRepository.findById(post.getId());
 
@@ -72,7 +72,7 @@ class HbmPostRepositoryTest {
 
     @Test
     public void whenFindAll() throws Exception {
-        var user = new User(0, "user", "password");
+        var user = new User(0, "name", "user", "password");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var priceHistory1 = new PriceHistory(0, BigInteger.valueOf(100), BigInteger.valueOf(200), LocalDateTime.now());
         crudRepository.run((Consumer<Session>) session -> session.persist(priceHistory1));
@@ -90,11 +90,11 @@ class HbmPostRepositoryTest {
         crudRepository.run((Consumer<Session>) session -> session.persist(file1));
 
         var post1 = new Post(0, "post1", LocalDateTime.now(), user,
-                List.of(priceHistory1), List.of(user), car, List.of(file1)
+                List.of(priceHistory1), List.of(user), car, List.of(file1), false
         );
         postRepository.save(post1);
         var post2 = new Post(0, "post2", LocalDateTime.now(), user,
-                List.of(priceHistory2), List.of(user), car, List.of()
+                List.of(priceHistory2), List.of(user), car, List.of(), false
         );
         postRepository.save(post2);
         var expectedPosts = List.of(post1, post2);
@@ -106,7 +106,7 @@ class HbmPostRepositoryTest {
 
     @Test
     public void whenFindAllCreatedToday() throws Exception {
-        var user = new User(0, "user", "password");
+        var user = new User(0, "name", "user", "password");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var priceHistory1 = new PriceHistory(
                 0, BigInteger.valueOf(100), BigInteger.valueOf(200), LocalDateTime.now());
@@ -126,11 +126,11 @@ class HbmPostRepositoryTest {
         crudRepository.run((Consumer<Session>) session -> session.persist(file1));
 
         var post1 = new Post(0, "post1", LocalDateTime.now(), user,
-                List.of(priceHistory1), List.of(user), car, List.of(file1)
+                List.of(priceHistory1), List.of(user), car, List.of(file1), false
         );
         postRepository.save(post1);
         var post2 = new Post(0, "post2", LocalDateTime.now().minusDays(3), user,
-                List.of(priceHistory2), List.of(user), car, List.of()
+                List.of(priceHistory2), List.of(user), car, List.of(), false
         );
         postRepository.save(post2);
         var expectedPosts = List.of(post1);
@@ -142,7 +142,7 @@ class HbmPostRepositoryTest {
 
     @Test
     public void whenFindByCarModel() throws Exception {
-        var user = new User(0, "user", "password");
+        var user = new User(0, "name", "user", "password");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var priceHistory1 = new PriceHistory(0, BigInteger.valueOf(100), BigInteger.valueOf(200), LocalDateTime.now());
         crudRepository.run((Consumer<Session>) session -> session.persist(priceHistory1));
@@ -169,11 +169,11 @@ class HbmPostRepositoryTest {
         crudRepository.run((Consumer<Session>) session -> session.persist(file2));
 
         var post1 = new Post(0, "post1", LocalDateTime.now(), user,
-                List.of(priceHistory1), List.of(user), car1, List.of(file1)
+                List.of(priceHistory1), List.of(user), car1, List.of(file1), false
         );
         postRepository.save(post1);
         var post2 = new Post(0, "post2", LocalDateTime.now(), user,
-                List.of(priceHistory2), List.of(user), car2, List.of()
+                List.of(priceHistory2), List.of(user), car2, List.of(), false
         );
         postRepository.save(post2);
         var expectedPosts = List.of(post1);
@@ -185,7 +185,7 @@ class HbmPostRepositoryTest {
 
     @Test
     public void whenFindAllWithFiles() throws Exception {
-        var user = new User(0, "user", "password");
+        var user = new User(0, "name", "user", "password");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var priceHistory1 = new PriceHistory(0, BigInteger.valueOf(100), BigInteger.valueOf(200), LocalDateTime.now());
         crudRepository.run((Consumer<Session>) session -> session.persist(priceHistory1));
@@ -212,11 +212,11 @@ class HbmPostRepositoryTest {
         crudRepository.run((Consumer<Session>) session -> session.persist(file2));
 
         var post1 = new Post(0, "post1", LocalDateTime.now(), user,
-                List.of(priceHistory1), List.of(user), car1, List.of(file1)
+                List.of(priceHistory1), List.of(user), car1, List.of(file1), false
         );
         postRepository.save(post1);
         var post2 = new Post(0, "post2", LocalDateTime.now(), user,
-                List.of(priceHistory2), List.of(user), car2, List.of()
+                List.of(priceHistory2), List.of(user), car2, List.of(), false
         );
         postRepository.save(post2);
         var expectedPosts = List.of(post1);

@@ -1,5 +1,6 @@
 package ru.job4j.repository;
 import ru.job4j.model.CarModel;
+import ru.job4j.model.Engine;
 import ru.job4j.model.Post;
 
 import java.util.List;
@@ -16,5 +17,9 @@ public interface PostRepository {
 
     List<Post> findByCarModel(CarModel carModel);
 
+    List<Post> findByEngine(Engine engine);
+
     List<Post> findAllWithFiles();
+
+    boolean sellPostById(int id);
 }

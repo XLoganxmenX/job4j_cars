@@ -1,0 +1,20 @@
+<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">Job4jCars</a>
+            <div class="collapse navbar-collapse">
+                <div class="navbar-nav me-auto align-items-center">
+                    <a class="nav-item nav-link active" th:href="@{/posts}">Объявления</a>
+                </div>
+            </div>
+            <div class="d-flex" th:if="${user.name == 'Гость' || user.name == null}">
+                <a class="nav-link text-white" th:href="@{/users/register}">Регистрация</a>
+                <a class="nav-link text-white" th:href="@{/users/login}">Войти</a>
+            </div>
+            <div class="d-flex" th:if="${user.name != null && user.name != 'Гость'}">
+                <a class="nav-link text-white me-3" href="#" th:text="${user.login}"></a>
+                <a class="nav-link text-white" th:href="@{/users/logout}">Выйти</a>
+            </div>
+        </div>
+    </nav>
+</div>

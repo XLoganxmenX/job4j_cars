@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.model.CarModel;
+import ru.job4j.model.Engine;
 import ru.job4j.model.File;
 import ru.job4j.model.Post;
 
@@ -150,6 +151,31 @@ public class HbmPostRepository implements PostRepository {
     }
 
     @Override
+    public List<Post> findByEngine(Engine engine) {
+        try {
+            var posts = crudRepository.query("""
+                    SELECT DISTINCT p FROM Post p
+                    JOIN FETCH p.user
+                    JOIN FETCH p.priceHistory
+                    JOIN FETCH p.car c
+                        JOIN FETCH c.engine e
+                        JOIN FETCH c.owners
+                        JOIN FETCH c.carModel
+                    WHERE e IN :fEngine
+                    """,
+                    Post.class,
+                    Map.of("fEngine", engine)
+            );
+            loadPostDetails(posts);
+
+            return posts;
+        } catch (Exception e) {
+            LOGGER.error("Exception on find Post ByEngine", e);
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
     public List<Post> findAllWithFiles() {
         try {
             var posts = crudRepository.query("""
@@ -217,5 +243,15 @@ public class HbmPostRepository implements PostRepository {
             post.setParticipates(participatesMap.get(post.getId()).getParticipates());
             post.setFiles(filesMap.get(post.getId()).getFiles());
         });
+    }
+
+    @Override
+    public boolean sellPostById(int id) {
+        try {
+            return crudRepository.run("UPDATE Post SET sold = true WHERE id = :fId", Map.of("fId", id));
+        } catch (Exception e) {
+            LOGGER.error("Exception on sell Task by id", e);
+        }
+        return false;
     }
 }

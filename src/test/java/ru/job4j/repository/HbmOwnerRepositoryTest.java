@@ -37,7 +37,7 @@ class HbmOwnerRepositoryTest {
 
     @Test
     public void whenFindOwnerByIdThenGetOwnerOptional() throws Exception {
-        var user = new User(0, "user", "password");
+        var user = new User(0, "user", "user", "password");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var expectedOwner = new Owner(0, "Owner", user);
         crudRepository.run((Consumer<Session>) session -> session.persist(expectedOwner));
@@ -53,7 +53,7 @@ class HbmOwnerRepositoryTest {
 
     @Test
     public void whenFindAllThenGetOwnersList() throws Exception {
-        var user = new User(0, "user", "password");
+        var user = new User(0, "user", "user", "password");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var owner1 = new Owner(0, "owner1", user);
         var owner2 = new Owner(0, "owner2", user);

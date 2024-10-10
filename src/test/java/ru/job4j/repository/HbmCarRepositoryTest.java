@@ -40,7 +40,7 @@ class HbmCarRepositoryTest {
     public void whenSaveAndFindById() throws Exception {
         var engine = new Engine(0, "engine");
         crudRepository.run((Consumer<Session>) session -> session.persist(engine));
-        var user = new User(0, "login", "password");
+        var user = new User(0, "user", "login", "password");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var owner = new Owner(0, "owner", user);
         crudRepository.run((Consumer<Session>) session -> session.persist(owner));
@@ -57,7 +57,7 @@ class HbmCarRepositoryTest {
     public void whenUpdateThenGetSame() throws Exception {
         var engine = new Engine(0, "engine");
         crudRepository.run((Consumer<Session>) session -> session.persist(engine));
-        var user = new User(0, "login", "password");
+        var user = new User(0, "user", "login", "password");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var owner = new Owner(0, "owner", user);
         crudRepository.run((Consumer<Session>) session -> session.persist(owner));
@@ -77,7 +77,7 @@ class HbmCarRepositoryTest {
     public void whenFindAll() throws Exception {
         var engine = new Engine(0, "engine");
         crudRepository.run((Consumer<Session>) session -> session.persist(engine));
-        var user = new User(0, "test", "test");
+        var user = new User(0, "user", "test", "test");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var owner = new Owner(0, "owner", user);
         crudRepository.run((Consumer<Session>) session -> session.persist(owner));
@@ -97,7 +97,7 @@ class HbmCarRepositoryTest {
     public void whenDeleteThenNotFound() throws Exception {
         var engine = new Engine(0, "engine");
         crudRepository.run((Consumer<Session>) session -> session.persist(engine));
-        var user = new User(0, "login", "password");
+        var user = new User(0, "user", "login", "password");
         crudRepository.run((Consumer<Session>) session -> session.persist(user));
         var owner = new Owner(0, "owner", user);
         crudRepository.run((Consumer<Session>) session -> session.persist(owner));

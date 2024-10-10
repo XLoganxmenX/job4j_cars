@@ -30,16 +30,18 @@ class HbmUserRepositoryTest {
 
     @Test
     public void whenSaveUserAndFindById() throws Exception {
-        var expectedUser = userRepository.create(new User(0, "login", "password"));
-        var actualUser = userRepository.findById(expectedUser.getId()).get();
+        var user = new User(0, "user", "login", "password");
+        var expectedUser = userRepository.create(user);
+        var actualUser = userRepository.findById(user.getId());
         assertThat(actualUser).isEqualTo(expectedUser);
     }
 
     @Test
     public void whenDeleteUser() {
-        var savedUser = userRepository.create(new User(0, "login", "password"));
-        userRepository.delete(savedUser.getId());
-        var foundUser = userRepository.findById(savedUser.getId());
+        var user = new User(0, "user", "login", "password");
+        userRepository.create(user);
+        userRepository.delete(user.getId());
+        var foundUser = userRepository.findById(user.getId());
         assertThat(foundUser).isEmpty();
         assertThat(userRepository.findAllOrderById()).isEmpty();
     }

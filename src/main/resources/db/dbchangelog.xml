@@ -20,4 +20,8 @@
     <include file="scripts/013_ddl_alter_table_car.sql" relativeToChangelogFile="true"/>
     <include file="scripts/014_ddl_create_table_files.sql" relativeToChangelogFile="true"/>
     <include file="scripts/015_ddl_create_table_post_file.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/016_ddl_alter_table_auto_user.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/017_dml_insert_table_car_models.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/018_dml_insert_table_engines.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/019_ddl_alter_table_auto_post.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

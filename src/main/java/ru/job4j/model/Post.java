@@ -52,4 +52,6 @@ public class Post {
             inverseJoinColumns = { @JoinColumn(name = "file_id")}
     )
     private List<File> files = new ArrayList<>();
+
+    private boolean sold;
 }

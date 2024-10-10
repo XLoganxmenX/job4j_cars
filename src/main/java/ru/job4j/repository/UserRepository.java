@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
-    User create(User user);
+    Optional<User> create(User user);
 
     void update(User user);
 
@@ -19,4 +19,6 @@ public interface UserRepository {
     List<User> findByLikeLogin(String key);
 
     Optional<User> findByLogin(String login);
+
+    Optional<User> findByLoginAndPassword(String login, String password);
 }

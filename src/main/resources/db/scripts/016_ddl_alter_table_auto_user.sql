@@ -1,0 +1,1 @@
+ALTER TABLE auto_user ADD COLUMN name text;
