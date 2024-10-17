@@ -55,3 +55,5 @@ Spring (Boot + MVC). На сайте представлена возможнос
 - Через терминал перейти в папку проекта и запустить его командой "mvn spring-boot:run";
 
 Если у Вас есть вопросы или предложения, вы можете связаться со мной по электронной почте: **loganxmen97@gmail.com**
+
+![build status](https://github.com/XLoganxmenX/job4j_cars/actions/workflows/maven.yml/badge.svg)
