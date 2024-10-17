@@ -57,3 +57,4 @@ Spring (Boot + MVC). На сайте представлена возможнос
 Если у Вас есть вопросы или предложения, вы можете связаться со мной по электронной почте: **loganxmen97@gmail.com**
 
 ![build status](https://github.com/XLoganxmenX/job4j_cars/actions/workflows/maven.yml/badge.svg)
+![Coverage](https://github.com/XLoganxmenX/job4j_cars/raw/master/.github/badges/jacoco.svg)
