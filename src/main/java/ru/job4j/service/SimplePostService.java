@@ -2,6 +2,7 @@ package ru.job4j.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.job4j.dto.CreatePagePostDto;
 import ru.job4j.dto.FileDto;
 import ru.job4j.dto.ListPagePostDto;
 import ru.job4j.dto.OnePagePostDto;
@@ -10,7 +11,7 @@ import ru.job4j.model.*;
 import ru.job4j.repository.PostRepository;
 
 import java.math.BigInteger;
-import java.time.LocalDateTime;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class SimplePostService implements PostService {
     private final FileService fileService;
 
     @Override
-    public Post save(Post post) {
+    public Post save(Post post) throws SQLException {
         return postRepository.save(post);
     }
 
@@ -72,14 +73,16 @@ public class SimplePostService implements PostService {
     }
 
     @Override
-    public Post createNewPost(User user, String description, LocalDateTime created,
-                              int price, Car car, List<FileDto> filesDto, boolean sold) {
-
-        var priceHistory = new PriceHistory(0, BigInteger.valueOf(0), BigInteger.valueOf(price), created);
+    public Post createNewPost(User user, CreatePagePostDto postDto,
+                              Car car, List<FileDto> filesDto) throws SQLException {
+        var priceHistory = new PriceHistory(
+                0, BigInteger.valueOf(0), BigInteger.valueOf(postDto.getPrice()), postDto.getCreated());
         priceHistoryService.save(priceHistory);
         var files = filesDto.stream().map(fileService::save).toList();
 
-        var post = new Post(0, description, created, user, List.of(priceHistory), List.of(user), car, files, sold);
+        var post = new Post(0, postDto.getDescription(), postDto.getCreated(),
+                user, List.of(priceHistory), List.of(user), car, files, false
+        );
         return postRepository.save(post);
     }
 

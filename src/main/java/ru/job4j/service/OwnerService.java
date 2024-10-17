@@ -2,11 +2,12 @@ package ru.job4j.service;
 
 import ru.job4j.model.Owner;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public interface OwnerService {
-    Owner save(Owner owner);
+    Owner save(Owner owner) throws SQLException;
 
     Optional<Owner> findById(int id);
 

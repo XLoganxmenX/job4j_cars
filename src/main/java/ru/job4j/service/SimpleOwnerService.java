@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.model.Owner;
 import ru.job4j.repository.OwnerRepository;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,7 @@ public class SimpleOwnerService implements OwnerService {
     private final OwnerRepository ownerRepository;
 
     @Override
-    public Owner save(Owner owner) {
+    public Owner save(Owner owner) throws SQLException {
         return ownerRepository.save(owner);
     }
 

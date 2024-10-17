@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.model.PriceHistory;
 
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -18,11 +19,12 @@ public class HbmPriceHistoryRepository implements PriceHistoryRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(HbmPriceHistoryRepository.class);
 
     @Override
-    public PriceHistory save(PriceHistory priceHistory) {
+    public PriceHistory save(PriceHistory priceHistory) throws SQLException {
         try {
             crudRepository.run((Consumer<Session>) session -> session.persist(priceHistory));
         } catch (Exception e) {
             LOGGER.error("Exception on save PriceHistory", e);
+            throw new SQLException("Ошибка при сохранении PriceHistory");
         }
         return priceHistory;
     }

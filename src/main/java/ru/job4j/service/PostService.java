@@ -1,17 +1,17 @@
 package ru.job4j.service;
 
-import org.springframework.web.multipart.MultipartFile;
+import ru.job4j.dto.CreatePagePostDto;
 import ru.job4j.dto.FileDto;
 import ru.job4j.dto.ListPagePostDto;
 import ru.job4j.dto.OnePagePostDto;
 import ru.job4j.model.*;
 
-import java.time.LocalDateTime;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public interface PostService {
-    Post save(Post post);
+    Post save(Post post) throws SQLException;
 
     Optional<Post> findById(int id);
 
@@ -29,8 +29,7 @@ public interface PostService {
 
     List<ListPagePostDto> findAllListPagePostDto();
 
-    Post createNewPost(User user, String description, LocalDateTime created,
-                       int price, Car car, List<FileDto> filesDto, boolean sold);
+    Post createNewPost(User user, CreatePagePostDto postDto, Car car, List<FileDto> filesDto) throws SQLException;
 
     boolean sellPostById(int id);
 }

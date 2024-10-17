@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.job4j.dto.CreatePagePostDto;
 import ru.job4j.dto.FileDto;
 import ru.job4j.model.User;
 import ru.job4j.service.CarModelService;
@@ -13,6 +14,8 @@ import ru.job4j.service.EngineService;
 import ru.job4j.service.PostService;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,16 +54,12 @@ public class PostController {
     }
 
     @PostMapping("/save")
-    public String createPost(@RequestParam("engineId") int engineId,
-                             @RequestParam("carModelId") int carModelId,
-                             @RequestParam("carName") String carName,
-                             @RequestParam("description") String description,
-                             @RequestParam("price") int price,
+    public String createPost(@ModelAttribute CreatePagePostDto postDto,
                              @RequestParam List<MultipartFile> files,
                              Model model,
-                             HttpSession session) {
+                             HttpSession session) throws SQLException {
         var user = (User) session.getAttribute("user");
-        var created = LocalDateTime.now();
+        postDto.setCreated(LocalDateTime.now());
         List<FileDto> filesDto = new ArrayList<>();
         try {
             for (MultipartFile file : files) {
@@ -68,10 +67,10 @@ public class PostController {
                     filesDto.add(new FileDto(file.getOriginalFilename(), file.getBytes()));
                 }
             }
-            var car = carService.createCar(user, carName, engineId, carModelId);
-            postService.createNewPost(user, description, created, price, car, filesDto, false);
+            var car = carService.createCarFromPost(user, postDto);
+            postService.createNewPost(user, postDto, car, filesDto);
             return "redirect:/posts";
-        } catch (Exception e) {
+        } catch (IOException e) {
             model.addAttribute("message", e.getMessage());
             return "errors/404";
         }

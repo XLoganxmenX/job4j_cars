@@ -1,17 +1,17 @@
 package ru.job4j.service;
 
-import ru.job4j.dto.FileDto;
+import ru.job4j.dto.CreatePagePostDto;
 import ru.job4j.model.Car;
 import ru.job4j.model.User;
 
-import java.time.LocalDateTime;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public interface CarService {
-    Car save(Car car);
+    Car save(Car car) throws SQLException;
 
-    Car createCar(User user, String carName, int engineId, int carModelId);
+    Car createCarFromPost(User user, CreatePagePostDto postDto) throws SQLException;
 
     boolean update(Car car);
 

@@ -10,6 +10,7 @@ import ru.job4j.model.Engine;
 import ru.job4j.model.File;
 import ru.job4j.model.Post;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -25,11 +26,12 @@ public class HbmPostRepository implements PostRepository {
     private final CrudRepository crudRepository;
 
     @Override
-    public Post save(Post post) {
+    public Post save(Post post) throws SQLException {
         try {
             crudRepository.run((Consumer<Session>) session -> session.persist(post));
         } catch (Exception e) {
             LOGGER.error("Exception on save Post", e);
+            throw new SQLException("Ошибка при сохранении Post");
         }
         return post;
     }

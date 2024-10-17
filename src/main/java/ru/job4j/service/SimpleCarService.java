@@ -2,11 +2,13 @@ package ru.job4j.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.job4j.dto.CreatePagePostDto;
 import ru.job4j.model.Car;
 import ru.job4j.model.Owner;
 import ru.job4j.model.User;
 import ru.job4j.repository.CarRepository;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -20,19 +22,19 @@ public class SimpleCarService implements CarService {
     private final OwnerService ownerService;
 
     @Override
-    public Car save(Car car) {
+    public Car save(Car car) throws SQLException {
         return carRepository.save(car);
     }
 
     @Override
-    public Car createCar(User user, String carName, int engineId, int carModelId) {
-        var engine = engineService.findById(engineId).orElseThrow(() ->
-                new IllegalArgumentException("Двигатель не найден"));
-        var carModel = carModelService.findById(carModelId).orElseThrow(() ->
-                new IllegalArgumentException("Модель авто не найдена"));
+    public Car createCarFromPost(User user, CreatePagePostDto postDto) throws SQLException {
+        var engine = engineService.findById(postDto.getEngineId())
+                .orElseThrow(() -> new IllegalArgumentException("Двигатель не найден"));
+        var carModel = carModelService.findById(postDto.getCarModelId())
+                .orElseThrow(() -> new IllegalArgumentException("Модель авто не найдена"));
         var owner = new Owner(0, user.getName(), user);
         ownerService.save(owner);
-        var car = new Car(0, carName, engine, carModel, Set.of(owner));
+        var car = new Car(0, postDto.getCarName(), engine, carModel, Set.of(owner));
 
         return save(car);
     }

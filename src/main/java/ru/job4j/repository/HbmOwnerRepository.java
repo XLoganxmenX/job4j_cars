@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.model.Owner;
 
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -20,11 +21,12 @@ public class HbmOwnerRepository implements OwnerRepository {
     private final CrudRepository crudRepository;
 
     @Override
-    public Owner save(Owner owner) {
+    public Owner save(Owner owner) throws SQLException {
         try {
             crudRepository.run((Consumer<Session>) session -> session.persist(owner));
         } catch (Exception e) {
             LOGGER.error("Exception on save Owner", e);
+            throw new SQLException("Ошибка при сохранении Owner");
         }
         return owner;
     }

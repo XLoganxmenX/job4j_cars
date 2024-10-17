@@ -2,11 +2,12 @@ package ru.job4j.repository;
 
 import ru.job4j.model.Car;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public interface CarRepository {
-    Car save(Car car);
+    Car save(Car car) throws SQLException;
 
     boolean update(Car car);
 

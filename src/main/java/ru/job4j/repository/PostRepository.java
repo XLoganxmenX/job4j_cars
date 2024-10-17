@@ -3,11 +3,12 @@ import ru.job4j.model.CarModel;
 import ru.job4j.model.Engine;
 import ru.job4j.model.Post;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository {
-    Post save(Post post);
+    Post save(Post post) throws SQLException;
 
     Optional<Post> findById(int id);
 
